@@ -6,7 +6,7 @@
 - ✅ Alpha Vantage API integration
 - ✅ PostgreSQL database (stock_ml_db)
 - ✅ Automated data extraction and loading
-- ✅ 9 tech stocks tracked (NVDA, IBM, TSLA, INTC, AAPL, GOOGL, META, MSFT, AMZN)
+- ✅ 17 tech stocks tracked (NVDA, IBM, TSLA, INTC, AAPL, GOOGL, META, MSFT, AMZN, NFLX, ORCL, ADBE, CRM, AMD, AVGO, QCOM, CSCO)
 - ✅ 900 records (100 days × 9 stocks)
 
 ### Tech Stack:
@@ -23,7 +23,6 @@ stock_prices (
 ```
 
 ### Next Steps:
-- [ ] Add NFLX (correct ticker)
 - [ ] Feature engineering (technical indicators)
 - [ ] SQL analytics queries
 - [ ] ML models for forecasting
