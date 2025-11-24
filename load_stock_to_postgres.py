@@ -245,7 +245,7 @@ if __name__ == "__main__":
     print("="*90)
     
     # List of stocks to track (start with just 3 to avoid API limits)
-    stocks = ["NVDA", "AMZN", "NLFX", "GOOGL", "MSFT","TSLA", "AAPL", "META", "IBM", "INTC"]
+    stocks = ["NFLX", "AMZN", "NLFX", "GOOGL", "MSFT","TSLA", "AAPL", "META", "IBM", "INTC"]
     
     # Test database connection first
     print("\nTesting database connection...")
