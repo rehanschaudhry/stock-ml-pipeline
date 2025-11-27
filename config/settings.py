@@ -44,13 +44,13 @@ class Config:
         "host": os.getenv("DB_HOST", "localhost"),
         "database": os.getenv("DB_NAME", "stock_ml_db"),
         "user": os.getenv("DB_USER", "postgres"),
-        "password": os.getenv("DB_PASSWORD", "mmhy68mm")  # TODO: Move to env var in production!
+        "password": os.getenv("DB_PASSWORD", "XXXXXXXXXX")  # TODO: Move to env var in production!
     }
     
     # =================================================================
     # API CONFIGURATION
     # =================================================================
-    API_KEY: str = os.getenv("ALPHA_VANTAGE_KEY", "KWKABB96U8N31TO4")  # TODO: Move to env var!
+    API_KEY: str = os.getenv("ALPHA_VANTAGE_KEY", "xxxxxxxxxxx")  # TODO: Move to env var!
     API_BASE_URL: str = "https://www.alphavantage.co/query"
     API_FUNCTION: str = "TIME_SERIES_DAILY"
     API_OUTPUT_SIZE: str = "compact"  # 'compact' = 100 days, 'full' = 20+ years
