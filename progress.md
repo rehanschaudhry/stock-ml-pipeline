@@ -278,12 +278,13 @@ stock-ml-pipeline/
 
 - **GitHub Repo:** https://github.com/rehanschaudhry/stock-ml-pipeline
 - **Alpha Vantage API Key:** KWKABB96U8N31TO4
-- **Database:** localhost, stock_ml_db, user: postgres, password: mmhy68mm
+- **Database:** localhost, stock_ml_db, user: postgres, password: 
 - **UofT DSI Python Materials:** (will add when accessed)
 
 ---
 
 ## 📝 SESSION NOTES
+
 
 ### Session 1 (2024-11-26 Evening)
 **Accomplished:**
@@ -341,9 +342,21 @@ stock-ml-pipeline/
 - .gitignore ✅
 - requirements.txt (updated) ✅
 
+### This Week (Week 1)
+- [x] **Day 1:** API integration + PostgreSQL (17 stocks, 1,700 records) ✅
+- [x] **Day 1:** Feature engineering + First ML model (Random Forest, 60% accuracy) ✅
+- [x] **Day 1:** Learned about Random Forest vs Decision Tree ✅
+- [x] **Day 1:** Understood why 80/20 split for time series ✅
+- [x] **Day 2:** Refactor into clean Python modules ✅
+- [x] **Day 2:** Virtual environment setup ✅
+- [x] **Day 2:** Security implementation (env vars) ✅
+
+
 **Status:** Week 1, Day 2 COMPLETE! 🎉
 
-**Next Session:** Create DatabaseManager class in `data/database.py`
+### Working On NEXT
+- **Task:** Create DatabaseManager class in `data/database.py`
+- **Status:** Ready to start next session!
 ---
 
 ## 🎯 SUCCESS METRICS
