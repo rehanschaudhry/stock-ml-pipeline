@@ -142,3 +142,112 @@ class DatabaseManager:
             print(f"❌ {error_msg}")
             raise
             
+    def get_stock_data(
+        self, 
+        symbol: str, 
+        start_date: str = None, 
+        end_date: str = None,
+        limit: int = None
+        ) -> pd.DataFrame:
+        """
+        Get stock price data for a specific symbol.
+    
+        Args:
+            symbol (str): Stock ticker symbol
+            start_date (str): Optional start date (YYYY-MM-DD)
+            end_date (str): Optional end date (YYYY-MM-DD)
+            limit (int): Optional row limit
+        
+        Returns:
+            pd.DataFrame: Stock price data
+        """
+        query = "SELECT * FROM stock_prices WHERE symbol = %s"
+        params = [symbol]
+    
+        if start_date:
+            query += " AND date >= %s"  
+            params.append(start_date)
+        
+        if end_date:
+            query += " AND date <= %s"  
+            params.append(end_date)
+        
+        query += " ORDER BY date DESC"  
+    
+        if limit:
+            query += " LIMIT %s"
+            params.append(limit)
+        
+        return self.execute_query(query, tuple(params))
+    
+    def insert_stock_data(self, df: pd.DataFrame, symbol: str) -> int:
+        """
+        Insert stock data into database with UPSERT logic.
+    
+        If a record already exists (same symbol + date), it will be updated.
+        If it doesn't exist, it will be inserted.
+    
+        Args:
+            df (pd.DataFrame): DataFrame with columns: date, open, high, low, close, volume
+            symbol (str): Stock ticker symbol
+        
+        Returns:
+            int: Number of rows inserted/updated
+        
+        Example:
+            >>> df = pd.DataFrame({
+            ...     'date': ['2025-01-01'],
+            ...     'open': [100], 'high': [102], 'low': [99],
+            ...     'close': [101], 'volume': [1000000]
+            ... })
+            >>> db.insert_stock_data(df, 'AAPL')
+            1
+        """
+        if self.connection is None or self.cursor is None:
+            logger.info("Not connected, connecting now...")
+            self.connect()
+        
+        insert_query = """
+            INSERT INTO stock_prices (symbol, date, open, high, low, close, volume)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (symbol, date)
+            DO UPDATE SET
+                open = EXCLUDED.open,
+                high = EXCLUDED.high,
+                low = EXCLUDED.low,
+                close = EXCLUDED.close,
+                volume = EXCLUDED.volume;
+            """
+        
+        row = list(df.itertuples(index=False, name=None))
+        
+        records = []
+        for index, row in df.iterrows():
+            record = (
+            symbol,
+            row['date'],
+            float(row['open']),
+            float(row['high']),
+            float(row['low']),
+            float(row['close']),
+            int(row['volume'])
+            )
+        records.append(record)
+
+        try:
+            inserted_count = 0
+            for record in records:
+                self.cursor.execute(insert_query, record)
+                inserted_count += 1
+            
+            self.connection.commit()
+            logger.info(f"{inserted_count} rows inserted/updated for {symbol}")
+            print(f"✅ {inserted_count} rows inserted/updated for {symbol}")
+            return inserted_count
+        
+        except psycopg2.Error as e:
+            self.connection.rollback()
+            error_msg = f"Insert failed: {e}"
+            logger.error(error_msg)
+            print(f"❌ {error_msg}")
+            raise
