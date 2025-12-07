@@ -57,7 +57,7 @@ class Config:
     API_KEY: str = os.getenv("ALPHA_VANTAGE_KEY")  # TODO: Move to env var!
     API_BASE_URL: str = "https://www.alphavantage.co/query"
     API_FUNCTION: str = "TIME_SERIES_DAILY"
-    API_OUTPUT_SIZE: str = "compact"  # 'compact' = 100 days, 'full' = 20+ years
+    API_OUTPUT_SIZE: str = "full"  # 'compact' = 100 days, 'full' = 20+ years
     API_RATE_LIMIT_DELAY: int = 15  # Seconds between API calls
     
     # =================================================================
