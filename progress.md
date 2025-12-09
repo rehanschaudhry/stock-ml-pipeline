@@ -595,3 +595,73 @@ git push
 - Train: ~4,300 days
 - Test: ~1,000 days
 - Reliable model comparison!
+
+---
+
+### Week 2, Days 1-2 (2024-12-09) - COMPLETE! ✅
+
+**Time Spent:** ~3 hours (evening session)
+
+**Theme:** Model Comparison with Real Data + Overcoming Obstacles
+
+**Challenges Overcome:**
+1. ❌ Alpha Vantage API limit (25 calls/day) - hit multiple times
+2. ✅ Switched to Yahoo Finance (unlimited, free!)
+3. ❌ DatabaseManager.insert_stock_data() bug - only inserted 1 row
+4. ✅ Fixed by bypassing and using direct SQL insertion
+5. ❌ Data had infinity/NaN values
+6. ✅ Added data cleaning and outlier removal
+
+**Accomplished:**
+- ✅ Loaded 140,053 days of data (17 stocks, avg 8,238 days per stock)
+- ✅ IBM: 16,093 days (63.9 years since 1962!)
+- ✅ AAPL: 11,340 days (45 years!)
+- ✅ Trained Random Forest on 8,454 days
+- ✅ Trained XGBoost on 8,454 days
+- ✅ Tested on 2,114 days (proper evaluation!)
+
+**Results:**
+- Random Forest: 49.05% accuracy
+- XGBoost: 49.15% accuracy
+- **Key Learning:** Stock prediction with basic technical indicators ≈ random guessing
+- **Important:** This is NORMAL and expected! Stock markets are efficient.
+
+**Technical Skills Demonstrated:**
+- API switching (Alpha Vantage → Yahoo Finance)
+- Debugging data pipeline issues
+- Direct SQL operations (bypassing ORM when needed)
+- Data cleaning (handling inf, NaN, outliers)
+- Large-scale data processing (140k+ records)
+- Train/test split on time series data
+- Model comparison methodology
+
+**Why Results Are ~50%:**
+1. Next-day prediction is extremely noisy
+2. Basic technical indicators are "weak signals"
+3. Missing crucial data: news, sentiment, market events
+4. Stock markets are efficient (if it were easy, everyone would be rich!)
+
+**Portfolio Value:**
+- Shows realistic ML expectations
+- Demonstrates problem-solving (overcame 3 major blockers)
+- Real data at scale (140k+ data points)
+- Professional approach (didn't fake results or cherry-pick)
+
+**Files Created/Modified:**
+- `working_yahoo_loader.py` - Fixed data loader
+- `model_comparison.py` - Added data cleaning
+- `load_from_yahoo.py` - Yahoo Finance integration
+- `clean_reload_yahoo.py` - Database refresh script
+
+**Next Session (Week 2, Day 3):**
+- Add detailed evaluation metrics (precision, recall, F1, ROC-AUC)
+- Understand confusion matrix deeply
+- When to use precision vs recall
+- Create evaluation report
+
+**Status:** Ready for evaluation metrics tomorrow! 💪
+
+---
+
+**Key Quote for Interviews:**
+> "I built a stock prediction model with 45 years of Apple stock data (11,340 days). The models achieved ~49% accuracy, which taught me that stock prediction requires more sophisticated features beyond basic technical indicators. This experience showed me the importance of feature engineering, domain expertise, and realistic expectations in ML projects. The value wasn't in achieving high accuracy, but in building a complete, production-quality ML pipeline and understanding why the problem is fundamentally difficult."

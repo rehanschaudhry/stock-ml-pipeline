@@ -86,6 +86,23 @@ def prepare_data(symbol='AAPL'):
     # Drop NaN values (from rolling calculations)
     df = df.dropna()
     
+    # CRITICAL: Remove infinity values and extreme outliers
+    print(f"   Cleaning data (removing inf/nan values)...")
+    
+    # Replace infinity with NaN
+    df = df.replace([float('inf'), float('-inf')], float('nan'))
+    
+    # Drop rows with NaN after replacement
+    df = df.dropna()
+    
+    # Remove extreme outliers (values beyond 3 standard deviations)
+    numeric_columns = ['daily_return', 'volatility_20', 'momentum_5', 'volume_change', 'hl_spread']
+    for col in numeric_columns:
+        if col in df.columns:
+            mean = df[col].mean()
+            std = df[col].std()
+            df = df[(df[col] >= mean - 3*std) & (df[col] <= mean + 3*std)]
+    
     print(f"   After feature engineering: {len(df)} days")
     print(f"   Features created: {len([col for col in df.columns if col not in ['date', 'target', 'tomorrow_close']])}")
     
