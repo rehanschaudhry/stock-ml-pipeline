@@ -665,3 +665,4 @@ git push
 
 **Key Quote for Interviews:**
 > "I built a stock prediction model with 45 years of Apple stock data (11,340 days). The models achieved ~49% accuracy, which taught me that stock prediction requires more sophisticated features beyond basic technical indicators. This experience showed me the importance of feature engineering, domain expertise, and realistic expectations in ML projects. The value wasn't in achieving high accuracy, but in building a complete, production-quality ML pipeline and understanding why the problem is fundamentally difficult."
+

@@ -13,9 +13,20 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import (
+    accuracy_score, 
+    classification_report, 
+    confusion_matrix,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_auc_score,
+    roc_curve
+)
 from xgboost import XGBClassifier
 import psycopg2
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Import secure configuration
 from config.settings import config
@@ -227,6 +238,55 @@ def train_models(df, symbol='AAPL'):
     print(f"              DOWN    UP")
     print(f"   Actual DOWN  {cm[0,0]:3d}   {cm[0,1]:3d}")
     print(f"          UP    {cm[1,0]:3d}   {cm[1,1]:3d}")
+    
+    # ========================================================================
+    # DETAILED METRICS COMPARISON (NEW!)
+    # ========================================================================
+    print(f"\n   📊 DETAILED METRICS COMPARISON:")
+    print("="*60)
+    
+    # Calculate metrics for both models
+    rf_precision = precision_score(y_test, rf_pred)
+    rf_recall = recall_score(y_test, rf_pred)
+    rf_f1 = f1_score(y_test, rf_pred)
+    
+    xgb_precision = precision_score(y_test, xgb_pred)
+    xgb_recall = recall_score(y_test, xgb_pred)
+    xgb_f1 = f1_score(y_test, xgb_pred)
+    
+    # Get probability predictions for ROC-AUC
+    rf_proba = rf_model.predict_proba(X_test)[:, 1]  # Probability of UP
+    xgb_proba = xgb_model.predict_proba(X_test)[:, 1]
+    
+    rf_roc_auc = roc_auc_score(y_test, rf_proba)
+    xgb_roc_auc = roc_auc_score(y_test, xgb_proba)
+    
+    print(f"\n   {'Metric':<20} {'Random Forest':<20} {'XGBoost':<20} {'Better':<10}")
+    print("-"*70)
+    
+    def print_metric_row(name, rf_val, xgb_val):
+        better = "XGBoost ✅" if xgb_val > rf_val else "RF ✅" if rf_val > xgb_val else "Tie"
+        print(f"   {name:<20} {rf_val:<20.4f} {xgb_val:<20.4f} {better:<10}")
+    
+    print_metric_row("Accuracy", rf_accuracy, xgb_accuracy)
+    print_metric_row("Precision", rf_precision, xgb_precision)
+    print_metric_row("Recall", rf_recall, xgb_recall)
+    print_metric_row("F1-Score", rf_f1, xgb_f1)
+    print_metric_row("ROC-AUC", rf_roc_auc, xgb_roc_auc)
+    
+    print("\n   💡 WHAT THESE METRICS MEAN FOR STOCK TRADING:")
+    print("-"*70)
+    print(f"   Precision ({best_model_name}): {precision_score(y_test, best_pred):.1%}")
+    print(f"   → When model says BUY, it's right {precision_score(y_test, best_pred):.1%} of the time")
+    print(f"   → For every 100 trades, ~{int(100 * precision_score(y_test, best_pred))} are profitable")
+    print()
+    print(f"   Recall ({best_model_name}): {recall_score(y_test, best_pred):.1%}")
+    print(f"   → Model catches {recall_score(y_test, best_pred):.1%} of all profitable opportunities")
+    print(f"   → Misses {100 - recall_score(y_test, best_pred):.1f}% of UP days")
+    print()
+    print(f"   ROC-AUC ({best_model_name}): {roc_auc_score(y_test, best_model.predict_proba(X_test)[:, 1]):.4f}")
+    print(f"   → 0.50 = random guessing, 1.00 = perfect")
+    print(f"   → Model is {abs(roc_auc_score(y_test, best_model.predict_proba(X_test)[:, 1]) - 0.5):.4f} better than random")
     
     # FEATURE IMPORTANCE COMPARISON
     print(f"\n   Feature Importance Comparison:")
